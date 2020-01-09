@@ -1,7 +1,7 @@
 <template>
     <div>
-        <!--开启摄像头-->
         <el-button id="back" type="primary" class="el-icon-back" @click="back()"></el-button>
+        <!--开启摄像头-->
         <el-button id="camera" type="primary" @click="callCamera" class="el-icon-camera-solid"></el-button>
         <!--图片展示-->
         <video ref="video" width="600" height="440" autoplay></video>
@@ -30,7 +30,9 @@ import Radio from '@/views/radio'
 export default {
   data () {
     return {
-        dialogVisible: false
+      imgBase64,
+      dialogVisible: false,
+
     }
   },
   components:{
@@ -68,7 +70,7 @@ export default {
     //   console.log(size)
 
  　　  // 上传拍照信息  调用接口上传图片 .........
-
+      
       // 保存到本地
     //   let ADOM = document.createElement('a')
     //   ADOM.href = this.headImgSrc

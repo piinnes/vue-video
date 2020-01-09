@@ -95,7 +95,7 @@ export default {
     getRabbishList()
       .then(res => {
         //  console.log(res.length)
-        for(let i=1;i<res.length;i++){
+        for(let i=0;i<res.length;i++){
           //  console.log(res[i])
           this.rabbishList.push(res[i])
         }

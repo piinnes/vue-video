@@ -13,7 +13,7 @@
 <script>
 import CollectList from '@/views/collect/children/CollectList'
 import ImageList from '@/components/ImageList'
-import photo from '@/views/collect/children/video'
+import photo from '@/views/collect/children/photo'
 
 export default {
   data() {

@@ -25,7 +25,7 @@ import path from 'path'
 import i18n from '@/lang'
 import { string } from 'jszip/lib/support'
 import {getRabbishByLikeName} from '@/network/rabbish'
-import {getCollectByLikeName} from '@/network/rabbish'
+import {getCollectByLikeName} from '@/network/collect'
 
 
 
@@ -178,8 +178,8 @@ export default {
               // console.log(item)
             //   this.options = item
             // }
+            // console.log(query)
             // console.log(res)
-            // console.log()
             this.search = query
             this.$emit('updateData',res)
             this.$refs.headerSearchSelect.blur() 

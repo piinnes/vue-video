@@ -2,7 +2,7 @@
   <div>
     <el-button type="primary" class="el-icon-back" @click="back()"></el-button>
     <el-button type="primary"  @click="photo()" v-if="isShow">去拍照</el-button>
-    <el-carousel indicator-position="outside">
+    <el-carousel indicator-position="none">
         <el-carousel-item v-for="item in 4" :key="item">
           <h3>{{ item }}</h3>
         </el-carousel-item>

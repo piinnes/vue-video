@@ -100,7 +100,7 @@ export default {
     getCollectList()
       .then(res => {
         //  console.log(res.length)
-        for(let i=1;i<res.length;i++){
+        for(let i=0;i<res.length;i++){
           //  console.log(res[i])
           let time = this.formatDate(res[i].createTime)
           res[i].createTime = time
@@ -228,7 +228,14 @@ export default {
     },
     //模糊搜索更新数据
     updateData(data){
-        this.collectList = data
+        this.collectList = []
+        for(let i=1;i<data.length;i++){
+          //  console.log(res[i])
+          let time = this.formatDate(data[i].createTime)
+          data[i].createTime = time
+        //  console.log(time)
+          this.collectList.push(data[i])
+        }
     },
     formatDate(time) {
         let date = new Date(time)
