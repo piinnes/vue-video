@@ -75,11 +75,22 @@ export default {
   login: {
     title: 'Login Form',
     logIn: 'Login',
+    Register: 'Register',
+    forget: 'Forget Password',
     username: 'Username',
     password: 'Password',
     any: 'any',
     thirdparty: 'Or connect with',
     thirdpartyTips: 'Can not be simulated on local, so please combine you own business simulation! ! !'
+  },
+  register: {
+    title: 'Register Form',
+    login: 'Login',
+    register: 'Register'
+  },
+  forget: {
+    title: 'Forget Password Form',
+    updatePassword: "Update Password"
   },
   documentation: {
     documentation: 'Documentation',

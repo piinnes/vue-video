@@ -7,10 +7,10 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 /* Router Modules */
-import componentsRouter from './modules/components'
+// import componentsRouter from './modules/components'
 import chartsRouter from './modules/charts'
-import tableRouter from './modules/table'
-import nestedRouter from './modules/nested'
+// import tableRouter from './modules/table'
+// import nestedRouter from './modules/nested'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -60,11 +60,11 @@ export const constantRoutes = [
     component: () => import('@/views/login/auth-redirect'),
     hidden: true
   },
-  {
-    path: '/404',
-    component: () => import('@/views/error-page/404'),
-    hidden: true
-  },
+  // {
+  //   path: '/404',
+  //   component: () => import('@/views/error-page/404'),
+  //   hidden: true
+  // },
   {
     path: '/401',
     component: () => import('@/views/error-page/401'),
@@ -92,8 +92,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/rabbish/index'),
         name: 'Rabbish',
-        meta: { title: 'rabbish', icon: 'documentation',noCache: true },
-       
+        meta: { title: 'Rubbish', icon: 'documentation',noCache: true },
       }
     ]
   },
@@ -105,7 +104,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/collect/index'),
         name: 'Collect',
-        meta: { title: 'collect', icon: 'documentation',noCache: true},
+        meta: { title: 'Collect', icon: 'documentation',noCache: true},
       }
     ]
   },
@@ -143,47 +142,47 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
-  {
-    path: '/permission',
-    component: Layout,
-    redirect: '/permission/page',
-    alwaysShow: true, // will always show the root menu
-    name: 'Permission',
-    meta: {
-      title: 'permission',
-      icon: 'lock',
-      roles: ['admin', 'editor'] // you can set roles in root nav
-    },
-    children: [
-      {
-        path: 'page',
-        component: () => import('@/views/permission/page'),
-        name: 'PagePermission',
-        meta: {
-          title: 'pagePermission',
-          roles: ['admin'] // or you can only set roles in sub nav
-        }
-      },
-      {
-        path: 'directive',
-        component: () => import('@/views/permission/directive'),
-        name: 'DirectivePermission',
-        meta: {
-          title: 'directivePermission'
-          // if do not set roles, means: this page does not require permission
-        }
-      },
-      {
-        path: 'role',
-        component: () => import('@/views/permission/role'),
-        name: 'RolePermission',
-        meta: {
-          title: 'rolePermission',
-          roles: ['admin']
-        }
-      }
-    ]
-  },
+  // {
+  //   path: '/permission',
+  //   component: Layout,
+  //   redirect: '/permission/page',
+  //   alwaysShow: true, // will always show the root menu
+  //   name: 'Permission',
+  //   meta: {
+  //     title: 'permission',
+  //     icon: 'lock',
+  //     roles: ['admin', 'editor'] // you can set roles in root nav
+  //   },
+  //   children: [
+  //     {
+  //       path: 'page',
+  //       component: () => import('@/views/permission/page'),
+  //       name: 'PagePermission',
+  //       meta: {
+  //         title: 'pagePermission',
+  //         roles: ['admin'] // or you can only set roles in sub nav
+  //       }
+  //     },
+  //     {
+  //       path: 'directive',
+  //       component: () => import('@/views/permission/directive'),
+  //       name: 'DirectivePermission',
+  //       meta: {
+  //         title: 'directivePermission'
+  //         // if do not set roles, means: this page does not require permission
+  //       }
+  //     },
+  //     {
+  //       path: 'role',
+  //       component: () => import('@/views/permission/role'),
+  //       name: 'RolePermission',
+  //       meta: {
+  //         title: 'rolePermission',
+  //         roles: ['admin']
+  //       }
+  //     }
+  //   ]
+  // },
 
   // {
   //   path: '/icon',
@@ -199,8 +198,8 @@ export const asyncRoutes = [
   // },
 
   /** when your routing map is too long, you can split it into small modules **/
-  componentsRouter,
-  chartsRouter,
+  // componentsRouter,
+  // chartsRouter,
   // nestedRouter,
   // tableRouter,
 
@@ -249,43 +248,43 @@ export const asyncRoutes = [
   //   ]
   // },
 
-  {
-    path: '/error',
-    component: Layout,
-    redirect: 'noRedirect',
-    name: 'ErrorPages',
-    meta: {
-      title: 'errorPages',
-      icon: '404'
-    },
-    children: [
-      {
-        path: '401',
-        component: () => import('@/views/error-page/401'),
-        name: 'Page401',
-        meta: { title: 'page401', noCache: true }
-      },
-      {
-        path: '404',
-        component: () => import('@/views/error-page/404'),
-        name: 'Page404',
-        meta: { title: 'page404', noCache: true }
-      }
-    ]
-  },
+  // {
+  //   path: '/error',
+  //   component: Layout,
+  //   redirect: 'noRedirect',
+  //   name: 'ErrorPages',
+  //   meta: {
+  //     title: 'errorPages',
+  //     icon: '404'
+  //   },
+  //   children: [
+  //     {
+  //       path: '401',
+  //       component: () => import('@/views/error-page/401'),
+  //       name: 'Page401',
+  //       meta: { title: 'page401', noCache: true }
+  //     },
+  //     {
+  //       path: '404',
+  //       component: () => import('@/views/error-page/404'),
+  //       name: 'Page404',
+  //       meta: { title: 'page404', noCache: true }
+  //     }
+  //   ]
+  // },
 
-  {
-    path: '/error-log',
-    component: Layout,
-    children: [
-      {
-        path: 'log',
-        component: () => import('@/views/error-log/index'),
-        name: 'ErrorLog',
-        meta: { title: 'errorLog', icon: 'bug' }
-      }
-    ]
-  },
+  // {
+  //   path: '/error-log',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'log',
+  //       component: () => import('@/views/error-log/index'),
+  //       name: 'ErrorLog',
+  //       meta: { title: 'errorLog', icon: 'bug' }
+  //     }
+  //   ]
+  // },
 
   // {
   //   path: '/excel',
@@ -324,22 +323,22 @@ export const asyncRoutes = [
   //   ]
   // },
 
-  {
-    path: '/zip',
-    component: Layout,
-    redirect: '/zip/download',
-    alwaysShow: true,
-    name: 'Zip',
-    meta: { title: 'zip', icon: 'zip' },
-    children: [
-      {
-        path: 'download',
-        component: () => import('@/views/zip/index'),
-        name: 'ExportZip',
-        meta: { title: 'exportZip' }
-      }
-    ]
-  },
+  // {
+  //   path: '/zip',
+  //   component: Layout,
+  //   redirect: '/zip/download',
+  //   alwaysShow: true,
+  //   name: 'Zip',
+  //   meta: { title: 'zip', icon: 'zip' },
+  //   children: [
+  //     {
+  //       path: 'download',
+  //       component: () => import('@/views/zip/index'),
+  //       name: 'ExportZip',
+  //       meta: { title: 'exportZip' }
+  //     }
+  //   ]
+  // },
 
   // {
   //   path: '/pdf',
@@ -401,14 +400,14 @@ export const asyncRoutes = [
 
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  // { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes,
-  mode: 'history'
+  mode: 'hash'
 })
 
 const router = createRouter()

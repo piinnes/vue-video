@@ -1,9 +1,36 @@
 import {request} from '@/network/request'
 
-export function getRabbishList(){
+export function getRabbishList(page,limit){
     return request({
         url: '/rabbish_category_list',
-        method: 'get'
+        method: 'get',
+        params: {
+            pageNum: page,
+            pageSize: limit
+        }
+    })
+}
+
+//模糊查询
+export function getRubbishByCondition(page, limit,data){
+    // console.log(data.timestamp=="");
+        return request({
+            url: '/rubbishByCondition',
+            method: 'get',
+            params: {
+                pageNum: page,
+                pageSize: limit,
+                name: data.name,
+                operate: data.operate,
+                total: data.total,
+            }
+        })
+}
+
+export function rabbishList(){
+    return request({
+        url: '/rabbishList',
+        method: 'get',
     })
 }
 
@@ -50,6 +77,18 @@ export function getRabbishByLikeName(data){
         method: 'get',
         params: {
             'likeName': data
+        }
+    })
+}
+
+//导出图片
+export function exportZip(rabbishId){
+    return request({
+        url: '/zipFile',
+        method: 'get',
+        // responseType: 'blob',
+        params: {
+            "rabbishId": rabbishId
         }
     })
 }

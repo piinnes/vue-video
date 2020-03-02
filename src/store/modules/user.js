@@ -1,6 +1,8 @@
-import { login, logout, getInfo } from '@/api/user'
+// import { login, logout, getInfo } from '@/api/user'
+import { login, logout,getInfo } from '@/network/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
+// import {getInfo } from '@/api/user'
 
 const state = {
   token: getToken(),
@@ -13,6 +15,7 @@ const state = {
 const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
+    // console.log(state.token);
   },
   SET_INTRODUCTION: (state, introduction) => {
     state.introduction = introduction
@@ -30,17 +33,36 @@ const mutations = {
 
 const actions = {
   // user login
+  // login({ commit }, userInfo) {
+  //   const { username, password } = userInfo
+  //   return new Promise((resolve, reject) => {
+  //     login({ username: username.trim(), password: password }).then(response => {
+  //       // console.log(response)
+  //       const { data } = response
+  //       commit('SET_TOKEN', data.token)
+  //       setToken(data.token)
+  //       resolve()
+  //     }).catch(error => {
+  //       // console.log(error)
+  //       reject(error)
+  //     })
+  //   })
+  // },
   login({ commit }, userInfo) {
+    // console.log(userInfo);
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
-        console.log(response)
+        // console.log(response)
         const { data } = response
+        if(data==undefined){
+          resolve(response.error)
+        }
         commit('SET_TOKEN', data.token)
         setToken(data.token)
         resolve()
       }).catch(error => {
-        console.log(error)
+        // console.log(error)
         reject(error)
       })
     })
@@ -50,6 +72,7 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
+        console.log(response);
         const { data } = response
 
         if (!data) {

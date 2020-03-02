@@ -2,8 +2,8 @@ export default {
   route: {
     dashboard: '首页',
     documentation: '文档',
-    rabbish: '垃圾类别管理',
-    collect: '采集信息管理',
+    Rubbish: '垃圾类别管理',
+    Collect: '采集信息管理',
     guide: '引导页',
     permission: '权限测试页',
     rolePermission: '角色权限',
@@ -77,7 +77,7 @@ export default {
   login: {
     title: '采集系统登录',
     logIn: '登录',
-    register: '注册',
+    Register: '注册',
     username: '账号',
     forget: '忘记密码',
     password: '密码',
@@ -85,6 +85,33 @@ export default {
     thirdparty: '第三方登录',
     thirdpartyTips: '本地不能模拟，请结合自己业务进行模拟！！！'
   },
+  register: {
+    title: '采集系统注册',
+    login: '立即登录',
+    register: '立即注册'
+  },
+  forget: {
+    title: '忘记密码',
+    updatePassword: "修改密码"
+  },
+  See: "查看",
+  Edit: "编辑",
+  Import: "导入",
+  Export: "导出",
+  Delete: "删除",
+  ChangeTo: "转出",
+  Search: "搜索",
+  Reset: "重置",
+  addRubbish: "新增类别", 
+  editRubbish: "编辑类别", 
+  addCollect: "新增采集",
+  editCollect: "编辑类别", 
+  Photograph: "去拍照", 
+  Confirm: "确认",
+  upLoad: "上传",
+  DateRange: "日期范围",
+  Name: "名称",
+  Total: "总计",
   documentation: {
     documentation: '文档',
     github: 'Github 地址'
@@ -136,7 +163,8 @@ export default {
     draft: '草稿',
     delete: '删除',
     cancel: '取 消',
-    confirm: '确 定'
+    confirm: '确 定',
+    
   },
   example: {
     warning: '创建和编辑页面是不能被 keep-alive 缓存的，因为keep-alive 的 include 目前不支持根据路由来缓存，所以目前都是基于 component name 来进行缓存的。如果你想类似的实现缓存效果，可以使用 localStorage 等浏览器缓存方案。或者不要使用 keep-alive 的 include，直接缓存所有页面。详情见'

@@ -1,15 +1,21 @@
 <template>
-  <div class="app-container">
+<el-card class="box-card">
+    <Search @find="find"></Search>
     <el-button type="primary" @click="handleAddRabbish">
-      新增类别
+      {{ $t('addRubbish') }}
     </el-button>
-    <HeaderSearch id="search" type='rabbish' @updateData='updateData' />
-    <el-table :data="rabbishList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column prop="id" align="center" label="ID" width="220">
+    <!-- <HeaderSearch id="search" type='rabbish' @updateData='updateData' /> -->
+    <!-- <el-table :data="rabbishList" style="width: 100%;margin-top:30px;" border> -->
+      <el-table
+    ref="singleTable"
+    :data="rabbishList"
+    highlight-current-row
+    style="width: 100%">
+      <el-table-column prop="id" align="center" label="ID" width="50">
       </el-table-column>
-      <el-table-column prop="name" align="center" label="类别名称" width="220">
+      <el-table-column prop="name" align="center" label="类别名称" width="400">
       </el-table-column>
-      <el-table-column prop="count" align="center" label="总计" width="220">
+      <el-table-column prop="count" align="center" label="总计" width="100">
       </el-table-column>
       <!-- <el-table-column align="header-center" label="描述">
         <template slot-scope="scope">
@@ -19,25 +25,28 @@
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="handleCheck(scope)">
-            查看
+            {{ $t('See') }}
           </el-button>
           <el-button type="primary" size="small" @click="handleEdit(scope)">
-            编辑
+            {{ $t('Edit') }}
+          </el-button>
+          <el-button type="primary" size="small" @click="handlImport(scope)">
+            {{ $t('Import') }}
           </el-button>
           <el-button type="primary" size="small" @click="handlexport(scope)">
-            导出
+            {{ $t('Export') }}
           </el-button>
-          <el-button type="danger" size="small" @click="handleDelete(scope)">
-            删除
+          <el-button v-if="isAdmin" type="danger" size="small" @click="handleDelete(scope)">
+            {{ $t('Delete') }}
           </el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'编辑类别':'新增类别'">
+    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'编辑类别':'{{新增类别}}'">
       <el-form  label-width="80px" label-position="left">
         <el-form-item label="类别名称">
-          <el-input v-model="name"  placeholder="Rabbish Name" />
+          <el-input v-model="name" show-word-limit maxlength="16" placeholder="Rabbish Name" />
         </el-form-item>
         <!-- <el-form-item label="Desc">
           <el-input
@@ -60,14 +69,18 @@
         </el-button>
       </div>
     </el-dialog>
-  </div>
+  <Pagination :total="total" @pagination="pagination" :page.sync="page" :limit.sync="limit"></Pagination>
+</el-card>
 </template>
 
 <script>
 // import path from 'path'
 import i18n from '@/lang'
 import HeaderSearch from '@/components/HeaderSearch'
-import {getRabbishList,addRabbish,deleteRabbish,getRabbish, editRabbish} from '@/network/rabbish'
+import {getRabbishList,addRabbish,deleteRabbish,getRabbish, editRabbish,exportZip,getRubbishByCondition} from '@/network/rabbish'
+import Pagination from '@/components/Pagination'
+import Search from "@/components/Search"
+
 
 
 export default {
@@ -77,29 +90,58 @@ export default {
       name: '',
       dialogVisible: false,
       dialogType: 'new',
-      rabbishList:[]
+      rabbishList:[],
+      isAdmin: false,
+      total: 0,
+      page: 1,
+      limit: 10,
+      search: {
+        name: '',
+        operate: '',
+        timestamp: '',
+        total: '',
+        options: [{
+          value: '0',
+          label: '<'
+        }, {
+          value: '1',
+          label: '<='
+        }, {
+          value: '2',
+          label: '='
+        }, {
+          value: '3',
+          label: '>'
+        }, {
+          value: '4',
+          label: '>='
+        }],
+      }
     }
   },
   components:{
-    HeaderSearch
+    HeaderSearch,
+    Pagination,
+    Search
   },
   computed: {
     
   },
   created() {
-   this.getRabbishList()
+    // console.log(this.$store.getters.roles[0]);
+   if(this.$store.getters.roles[0] == 'admin'){
+     this.isAdmin = true
+   }
+   this.getRabbishList(this.page,this.limit)
   },
   methods: {
     //查询列表
-    getRabbishList(){
-    getRabbishList()
+    getRabbishList(page, limit, search){
+    getRubbishByCondition(page,limit,this.search)
       .then(res => {
-        //  console.log(res.length)
-        for(let i=0;i<res.length;i++){
-          //  console.log(res[i])
-          this.rabbishList.push(res[i])
-        }
-        // console.log(res)
+        // console.log(res);
+        this.total = res.total
+        this.rabbishList = res.list
       })
       .catch(err => console.log(err))
     },
@@ -114,8 +156,8 @@ export default {
       this.dialogVisible = true
     },
     //查看图片
-    handleCheck(scope){
-        this.$emit('showImage')
+    handleCheck({ $index, row }){
+        this.$emit('showImage',row.id)
     },
     //编辑获取信息
     handleEdit({ $index, row }) {
@@ -133,8 +175,12 @@ export default {
         this.checkStrictly = false
       })
     },
+    //导入
+    handlImport({ $index, row }){
+        this.$emit("toImport",row.id);
+    },
     //导出
-    handlexport(scope) {
+    handlexport({ $index, row }) {
       this.$confirm('确认要导出吗?', 'Warning', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -143,9 +189,13 @@ export default {
         .then(async() => {
           // await deleteRole(row.key)
           // this.rolesList.splice($index, 1)
+          let a = document.createElement("a")
+          a.style.display = 'none';
+          a.setAttribute("href","http://localhost:8080/zipFile?rabbishId="+row.id);
+          a.click();
           this.$message({
-            type: 'success',
-            message: '导出成功!'
+          type: 'success',
+          message: '导出成功!'
           })
         })
         .catch(err => { console.error(err) })
@@ -163,7 +213,7 @@ export default {
           let json = {'id':row.id}
           deleteRabbish(JSON.stringify(json)).then(res => {
             this.rabbishList = []
-            this.getRabbishList()
+            this.getRabbishList(this.page,this.limit,this.search)
             this.$message({
             type: 'success',
             message: '删除成功!'
@@ -174,13 +224,17 @@ export default {
     },
     //确定添加/修改
     confirmRabbish(){
+      if(this.name.split(" ").join("").length === 0){
+        this.$message.error("名称不能为空!")
+        return
+      }
       const isEdit = this.dialogType === 'edit'
       let rabbish = {'name':this.name,'id':this.id}
       if (isEdit) {
         editRabbish(JSON.stringify(rabbish)).then(res => {
             // console.log(res)
             this.rabbishList = []
-            this.getRabbishList()
+            this.getRabbishList(this.page,this.limit,this.search)
             this.$message({
                 type: 'success',
                 message: '编辑成功!'
@@ -192,7 +246,7 @@ export default {
       addRabbish(JSON.stringify(rabbish)).then(res => {
         this.rabbishList = []
         this.name =''
-        this.getRabbishList()
+        this.getRabbishList(this.page,this.limit,this.search)
          this.$message({
             type: 'success',
             message: '添加成功!'
@@ -204,6 +258,16 @@ export default {
     },
     updateData(data){
         this.rabbishList = data
+    },
+    pagination({page,limit}){
+      getRubbishByCondition(page,limit,this.search).then(res => {
+        this.rabbishList = res.list
+      })
+    },
+    find(search){
+      this.search = search
+      this.getRabbishList(this.page, this.limit, this.search);
+      // console.log(this.search);
     }
   }
 }

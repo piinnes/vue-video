@@ -31,6 +31,7 @@ import { isExternal } from '@/utils/validate'
 import Item from './Item'
 import AppLink from './Link'
 import FixiOSBug from './FixiOSBug'
+import { log } from 'util'
 
 export default {
   name: 'SidebarItem',
@@ -65,6 +66,7 @@ export default {
         } else {
           // Temp set(will be used if only has one showing child)
           this.onlyOneChild = item
+          // console.log(item); 
           return true
         }
       })
@@ -88,6 +90,15 @@ export default {
       }
       if (isExternal(this.basePath)) {
         return this.basePath
+      }
+      let result = path.resolve(this.basePath, routePath)
+      // console.log(result.indexOf("C:")!=-1);
+      // console.log(result.substr(2));
+      let Path = result.substr(2) 
+      // console.log(Path);
+      // console.log(Path.replace(/\\/g,"/")); 
+      if(result.indexOf("C:")!=-1){
+        return Path.replace(/\\/g,"/")
       }
       return path.resolve(this.basePath, routePath)
     },

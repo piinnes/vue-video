@@ -38,12 +38,17 @@ export default {
       top: 0,
       left: 0,
       selectedTag: {},
-      affixTags: []
+      affixTags: [],
     }
   },
   computed: {
     visitedViews() {
+      // console.log(this.$store.state.tagsView.visitedViews[0]);
+      if(this.$store.state.tagsView.visitedViews[0]!=undefined && this.$store.state.tagsView.visitedViews[0].path==="C:\\dashboard"){
+      return this.$store.state.tagsView.visitedViews.slice(1); 
+    }else{
       return this.$store.state.tagsView.visitedViews
+    }
     },
     routes() {
       return this.$store.state.permission.routes

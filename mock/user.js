@@ -31,7 +31,7 @@ export default [
     response: config => {
       const { username } = config.body
       const token = tokens[username]
-
+      // console.log(token);
       // mock error
       if (!token) {
         return {
@@ -52,8 +52,11 @@ export default [
     url: '/user/info\.*',
     type: 'get',
     response: config => {
+      // console.log(config);
       const { token } = config.query
+      // console.log(token);
       const info = users[token]
+      // console.log(info);
 
       // mock error
       if (!info) {
