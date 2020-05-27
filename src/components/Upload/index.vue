@@ -8,7 +8,7 @@
       :before-remove="beforeRemove"
       multiple
       accept="image/jpeg,image/png"
-      :limit="30"
+      :limit="1000"
       :http-request="uploadFile"
       list-type="picture"
       :auto-upload="false"
@@ -37,24 +37,24 @@ export default {
       return {
         fileList: [],
         fileData: {},
-        fileReader: '',
       };
     },
     methods: {
       submitUpload() {
-if (this.fileList.length == 0) {
+        if (this.fileList.length == 0) {
           this.$message.warning("上传文件为空！")
         return false
       }
         this.$refs.upload.submit();
       },
       uploadFile:function(file){
+        var fileReader = new FileReader()
         if (file.file) {
-        this.fileReader.readAsDataURL(file.file)
+        fileReader.readAsDataURL(file.file)
         // console.log(this.fileReader.result);
         }
-        this.fileReader.onload = () => {
-        let base64Str = this.fileReader.result
+        fileReader.onload = () => {
+        let base64Str = fileReader.result
         let data = {
         base64Str: base64Str,
         rab_id: this.rabbishId
@@ -67,6 +67,7 @@ if (this.fileList.length == 0) {
           type: "success",
           message: "上传成功!"
         })
+        this.fileList.splice(0,1)
         this.$refs.upload.clearFiles();
         }else{
           this.$message({
@@ -94,7 +95,7 @@ if (this.fileList.length == 0) {
       }
     },
       handleExceed(files, fileList) {
-        this.$message.warning(`当前限制选择 30 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+        this.$message.warning(`当前限制选择 1000 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
       },
       beforeRemove(file, fileList) {
         return this.$confirm(`确定移除 ${ file.name }？`);

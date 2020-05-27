@@ -5,7 +5,8 @@
     <panel-group :gatherTotal="gatherTotal" :rubbishTotal="rubbishTotal" @handleSetLineChartData="handleSetLineChartData" />
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="lineChartData" />
+      <!-- <LineChart :chart-data="lineChartData" /> -->
+      <div id="homeChart" style="width: 100%; height: 400px;"></div>
     </el-row>
   </div>
 </template>
@@ -22,6 +23,7 @@ import TodoList from './components/TodoList'
 import BoxCard from './components/BoxCard'
 import {CollectList} from '@/network/collect'
 import {rabbishList} from '@/network/rabbish'
+import echarts from 'echarts'
 
 const lineChartData = {
   rubbish: {
@@ -59,17 +61,42 @@ export default {
   },
   data() {
     return {
-      lineChartData: {}
+      lineChartData: {},
+      xAxisData: [],
+      seriesData: [],
+      myChart: ''
     }
   },
+  mounted(){
+     this.$nextTick(function() {
+      this.initChart();
+    });
+  },
+  updated(){
+    this.initChart();
+  },
   created() {
-    this.getRabbishList()
+    this.lineChartData = {}
+      this.xAxisData = []
+      this.seriesData = []
+      lineChartData.gather.nameData = []
+      lineChartData.gather.actualData = []
+      lineChartData.rubbish.nameData = []
+      lineChartData.rubbish.actualData = []
     this.getCollectList()
-  },
-  activated(){
     this.getRabbishList()
-    this.getCollectList()
   },
+  // activated(){
+  //   this.lineChartData = {}
+  //     this.xAxisData = []
+  //     this.seriesData = []
+  //     lineChartData.gather.nameData = []
+  //     lineChartData.gather.actualData = []
+  //     lineChartData.rubbish.nameData = []
+  //     lineChartData.rubbish.actualData = []
+  //   this.getCollectList()
+  //   this.getRabbishList()
+  // },
   methods: {
     handleSetLineChartData(type) {
       if(type=='rubbish'){
@@ -80,6 +107,8 @@ export default {
     },
     getCollectList(){
       this.lineChartData = {}
+      this.xAxisData = []
+      this.seriesData = []
       lineChartData.gather.nameData = []
       lineChartData.gather.actualData = []
       CollectList().then(res => {
@@ -88,10 +117,16 @@ export default {
             lineChartData.gather.actualData.push(item.count)
           }
         })
+        // this.initChart(lineChartData.gather.nameData,lineChartData.gather.actualData)
         this.lineChartData = lineChartData.gather
+        // this.initChart(lineChartData.gather.nameData,lineChartData.gather.actualData)
+        this.xAxisData = lineChartData.gather.nameData
+        this.seriesData = lineChartData.gather.actualData
     },
     getRabbishList(){
       this.lineChartData = {}
+      this.xAxisData = []
+      this.seriesData = []
       lineChartData.rubbish.nameData = []
       lineChartData.rubbish.actualData = []
       rabbishList().then(res => {
@@ -100,8 +135,41 @@ export default {
             lineChartData.rubbish.actualData.push(item.count)
           }
         })
+        // console.log(lineChartData.rubbish);
+        // console.log(lineChartData.rubbish.nameData);
+        // this.initChart(lineChartData.rubbish.nameData,lineChartData.rubbish.actualData)
         this.lineChartData = lineChartData.rubbish
+        // this.initChart(lineChartData.rubbish.nameData,lineChartData.rubbish.actualData)
+        this.xAxisData = lineChartData.rubbish.nameData
+        this.seriesData = lineChartData.rubbish.actualData
     },
+    initChart(){
+      
+// 基于准备好的dom，初始化echarts实例
+this.myChart = echarts.init(document.getElementById('homeChart'));
+              // 指定图表的配置项和数据
+              this.myChart.setOption({
+                   title: {
+                        text: '数据直方图'
+                   },
+                   tooltip: {},
+                   legend: {
+                        data: ['数量']
+                   },
+                   xAxis: {
+                     "axisLabel":{     //加上这个强制显示
+                      interval: 0
+                    },
+                        data: this.xAxisData
+                   },
+                   yAxis: {},
+                   series: [{
+                        name: '数量',
+                        type: 'bar',
+                        data: this.seriesData
+                   }]
+              });
+    }
   },
   computed: {
       gatherTotal(){
@@ -112,8 +180,10 @@ export default {
         return total
       },
       rubbishTotal(){
+        // console.log(lineChartData.rubbish.actualData);
         let total = 0
         for(let item of lineChartData.rubbish.actualData){
+          // console.log(item);
           total += item
         }
         return total

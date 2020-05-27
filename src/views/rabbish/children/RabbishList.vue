@@ -191,7 +191,7 @@ export default {
           // this.rolesList.splice($index, 1)
           let a = document.createElement("a")
           a.style.display = 'none';
-          a.setAttribute("href","http://localhost:8080/zipFile?rabbishId="+row.id);
+          a.setAttribute("href","http://127.0.0.1:8080/zipFile?rabbishId="+row.id);
           a.click();
           this.$message({
           type: 'success',
@@ -233,6 +233,13 @@ export default {
       if (isEdit) {
         editRabbish(JSON.stringify(rabbish)).then(res => {
             // console.log(res)
+            if (!res.success) {
+            this.$message({
+              type: "error",
+              message: res.errMsg
+            });
+            return;
+          }
             this.rabbishList = []
             this.getRabbishList(this.page,this.limit,this.search)
             this.$message({
@@ -244,6 +251,13 @@ export default {
       } else {
       // console.log(JSON.stringify(rabbish))
       addRabbish(JSON.stringify(rabbish)).then(res => {
+        if (!res.success) {
+            this.$message({
+              type: "error",
+              message: res.errMsg
+            });
+            return;
+          }
         this.rabbishList = []
         this.name =''
         this.getRabbishList(this.page,this.limit,this.search)

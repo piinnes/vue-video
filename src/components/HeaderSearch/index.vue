@@ -26,6 +26,7 @@ import i18n from '@/lang'
 import { string } from 'jszip/lib/support'
 import {getRabbishByLikeName} from '@/network/rabbish'
 import {getCollectByLikeName} from '@/network/collect'
+import { log } from 'util'
 
 
 
@@ -88,7 +89,7 @@ export default {
       this.show = false
     },
     change(val) {
-      this.$router.push(val.path)
+      this.$router.push(val.path.substr(2).replace(/\\/g,"/"))
       this.search = ''
       this.options = []
       this.$nextTick(() => {
@@ -120,7 +121,6 @@ export default {
       for (const router of routes) {
         // skip hidden router
         if (router.hidden) { continue }
-
         const data = {
           path: path.resolve(basePath, router.path),
           title: [...prefixTitle]

@@ -1,25 +1,31 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div>
-      <el-button type="primary" class="el-icon-back" @click="back()"></el-button>
-      <el-button type="primary" @click="photo()" v-if="isShow">{{ $t("Photograph")}}</el-button>
-      <!-- <el-button type="primary" @click="Import()">导入</el-button> -->
-      <!-- <Upload></Upload> -->
-    </div>
-    <el-carousel @change="getId" indicator-position="none" v-if="ImageEncodeList.length>0">
-      <el-carousel-item v-for="(item, index) in ImageEncodeList" :key="index">
-        <!-- <h3>{{ item }}</h3> -->
-        <i id="index">第 {{index + 1}} 张</i>
-        <el-image :src="getUrl(item)" alt="图片溜走了~">
-          <!-- <div slot="error" class="image-slot">
+      <div>
+        <el-button type="primary" class="el-icon-back" @click="back()"></el-button>
+        <el-button type="primary" @click="photo()" v-if="isShow">{{ $t("Photograph")}}</el-button>
+        <!-- <el-button type="primary" @click="Import()">导入</el-button> -->
+        <!-- <Upload></Upload> -->
+      </div>
+      <el-carousel @change="getId" indicator-position="none" v-if="ImageEncodeList.length>0">
+        <el-carousel-item v-for="(item, index) in ImageEncodeList" :key="index">
+          <!-- <h3>{{ item }}</h3> -->
+          <i id="index">第 {{index + 1}} 张</i>
+          <el-image :src="getUrl(item)" alt="图片溜走了~">
+            <!-- <div slot="error" class="image-slot">
               <i class="el-icon-picture-outline"></i>
-          </div>-->
-        </el-image>
-      </el-carousel-item>
-    </el-carousel>
-    <ImageNull v-else></ImageNull>
-    <div id="delect" v-if="isAdmin">
-      <el-button v-if="ImageEncodeList.length>0" type="danger" @click="deleteImage">{{ $t("Delete")}}</el-button>
+            </div>-->
+          </el-image>
+        </el-carousel-item>
+      </el-carousel>
+      <ImageNull v-if="IsNull"></ImageNull>
+      <div id="delect" v-if="isAdmin">
+        <el-button
+          v-if="ImageEncodeList.length>0"
+          type="danger"
+          @click="deleteImage"
+        >{{ $t("Delete")}}</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -40,11 +46,13 @@ export default {
       index: 0,
       idList: [],
       ImageEncodeList: [],
-      isAdmin: false
+      isAdmin: false,
+      loading: true,
+      IsNull: false
     };
   },
   components: {
-    ImageNull,
+    ImageNull
   },
   computed: {
     getUrl() {
@@ -54,14 +62,17 @@ export default {
     }
   },
   created() {
-    if(this.$store.getters.roles[0] == 'admin'){
-     this.isAdmin = true
-   }
+    if (this.$store.getters.roles[0] == "admin") {
+      this.isAdmin = true;
+    }
     if (this.rabbishId != undefined) {
       this.getRabbishImageList();
     } else {
       this.getCollectImageList();
     }
+  },
+  mounted() {
+    // c
   },
   methods: {
     getRabbishImageList() {
@@ -74,7 +85,10 @@ export default {
               this.ImageEncodeList.push(item.encode);
               this.idList.push(item.id);
             }
+            this.loading = false;
           } else {
+            this.loading = false;
+            this.IsNull = true
             return;
           }
         })
@@ -91,7 +105,10 @@ export default {
             this.ImageEncodeList.push(item.encode);
             this.idList.push(item.id);
           }
+          this.loading = false;
         } else {
+          this.loading = false;
+          this.IsNull = true
           return;
         }
       });
@@ -175,6 +192,6 @@ export default {
   margin-top: 10px;
 }
 #index {
-  margin-left: 50%;
+  margin-left: 47%;
 }
 </style>

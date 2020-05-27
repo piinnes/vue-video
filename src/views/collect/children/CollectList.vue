@@ -181,7 +181,7 @@ export default {
         a.style.display = "none";
         a.setAttribute(
           "href",
-          "http://localhost:8080/zipFile?collectId=" + row.id
+          "http://127.0.0.1:8080/zipFile?collectId=" + row.id
         );
         a.click();
         this.$message({

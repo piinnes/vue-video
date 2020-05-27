@@ -22,8 +22,8 @@
               </el-option>
             </el-select>
       <el-input placeholder="请输入总计" v-model="search.total" type="text" oninput = "value=value.replace(/[^\d]/g,'')" class="total" prefix-icon="el-icon-search" clearable></el-input>&nbsp&nbsp
-      <el-button type="primary" @click="find">{{ $t('Search') }}</el-button>
-      <el-button type="primary" @click="reset">{{ $t('Reset') }}</el-button>
+      <el-button type="primary" @click="find" class="el-icon-search">{{ $t('Search') }}</el-button>
+      <el-button type="primary" @click="reset" class="el-icon-refresh">{{ $t('Reset') }}</el-button>
   </div>
 </template>
 

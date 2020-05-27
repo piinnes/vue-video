@@ -17,9 +17,12 @@ protocol.registerSchemesAsPrivileged([{scheme: 'app', privileges: { secure: true
 function createWindow () {
   // Menu.setApplicationMenu(null) // 关闭子窗口菜单栏
   // Create the browser window.
-  win = new BrowserWindow({ width: 800, height: 600, webPreferences: {
+  win = new BrowserWindow({ show:false, webPreferences: {
     nodeIntegration: true
   } })
+  
+  win.maximize()
+  win.show()
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
